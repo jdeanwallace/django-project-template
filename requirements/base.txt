@@ -1,0 +1,6 @@
+Django
+psycopg2-binary
+Markdown
+ipython
+djangorestframework
+celery
