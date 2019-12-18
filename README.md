@@ -1,6 +1,6 @@
 <!-- {% if False %} -->
 
-# The Missing Django Project Template
+# Django Project Template
 
 ## Overview
 Kickstart any new Django project with the following features already built-in:
