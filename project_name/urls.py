@@ -23,7 +23,7 @@ from apps.accounts import views as account_views
 
 
 api_router = routers.DefaultRouter(trailing_slash=False)
-api_router.register('auth', account_views.AuthViewSet, base_name='auth')
+api_router.register('auth', account_views.AuthViewSet, basename='auth')
 
 api_urls = [
     path('v1/', include(api_router.urls)),
