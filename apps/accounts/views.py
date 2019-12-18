@@ -1,7 +1,5 @@
-from rest_framework import viewsets, permissions, decorators, mixins, response
+from rest_framework import viewsets, permissions, decorators, response
 from rest_framework.authtoken.models import Token
-
-from django.shortcuts import render
 
 from . import models, serializers
 
