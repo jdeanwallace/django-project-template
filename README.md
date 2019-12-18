@@ -32,7 +32,9 @@ django-admin.py startproject \
 
 **Note**: *This template helps me to get up & running with my new Django projects. Who knows, maybe it can help you too. Enjoy!*
 
-<!-- {% endif %}Hello, World! -->
+<!-- {% endif %}Source: https://github.com/jdeanwallace/django-project-template -->
+
+<!-- Start {{ "--"|add:">" }}
 
 # {{ project_name|title }} Django Project
 ---
@@ -48,3 +50,5 @@ pip install -r requirements/dev.txt
 ...
 ./manage.py runserver
 ```
+
+{{ "<!"|add:"--" }} End. -->
