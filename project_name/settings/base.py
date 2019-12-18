@@ -96,7 +96,7 @@ DATABASES = {
     #     'PASSWORD': os.environ.get('DEFAULT_DATABASE_PASSWORD'),
     #     'HOST': os.environ.get('DEFAULT_DATABASE_HOST'),
     #     'PORT': os.environ.get('DEFAULT_DATABASE_PORT'),
-    # }
+    # },
 }
 
 
