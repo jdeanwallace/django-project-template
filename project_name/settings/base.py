@@ -196,6 +196,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
+        'asyncio': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     },
 }
 
