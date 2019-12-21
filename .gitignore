@@ -1,6 +1,6 @@
 __pycache__/
-static/
-media/
+/static/
+/media/
 *.pyc
 *.sqlite3
 *.log
