@@ -1,10 +1,7 @@
+from rest_framework import serializers
+
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
-
-from rest_framework import serializers
-from apps.utils.rest_framework import CustomModelSerializer
-
-from . import models
 
 
 class AuthTokenSerializer(serializers.Serializer):
