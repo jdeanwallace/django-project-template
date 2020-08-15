@@ -1,21 +1,23 @@
-from rest_framework import viewsets, permissions, decorators, response
+import logging
+
+from rest_framework import views, permissions, response
+from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
-from . import models, serializers
+from . import serializers
+
+
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
-class AuthViewSet(viewsets.GenericViewSet):
+class AuthTokenView(views.APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = serializers.AuthTokenSerializer
 
-    @decorators.action(
-        detail=False, methods=['POST'],
-        serializer_class=serializers.AuthTokenSerializer,
-    )
-    def token(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        return response.Response({'token': token.key})
+        return Response({'token': token.key})
