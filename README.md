@@ -11,14 +11,15 @@ Kickstart any new Django project with the following features already built-in:
   - `User`'s login using an `email` & `password` combination.
   - [DRF](https://www.django-rest-framework.org/) auth token integration.
 - A neat `/apps` directory for all your Django apps.
-- A `utils` app for all your commonly used functions & models.
+- A `utils` app for all your commonly used functions & models, including:
+  - A custom `JSONObjectField` & `JSONArrayField` to help enforce the integrity of your JSON data.
 - A `/settings` directory for separate environment settings like dev & prod.
 - Basic [Celery](https://docs.celeryproject.org/en/latest/index.html) config.
 - Basic [logging](https://docs.python.org/3/library/logging.html) config.
 
 ## Requirements
 - Python (3.5+)
-- Django (1.11+)
+- Django (3.1+)
 
 ## Usage
 ```bash

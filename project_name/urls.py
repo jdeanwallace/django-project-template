@@ -41,3 +41,8 @@ urlpatterns = [
     path('', default_view),
     path('admin/', admin.site.urls),
 ] + api_urls
+
+if settings.DEBUG:
+    # Let Django serve up static files while in debug mode
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    urlpatterns += staticfiles_urlpatterns()
