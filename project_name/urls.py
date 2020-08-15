@@ -13,20 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from rest_framework import routers
-
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
-from apps.accounts import views as account_views
-
-
-api_router = routers.DefaultRouter(trailing_slash=False)
-api_router.register('auth', account_views.AuthViewSet, basename='auth')
 
 api_urls = [
-    path('v1/', include(api_router.urls)),
+    path('accounts/', include('apps.accounts.urls.api_urls')),
 ]
 
 # Preserve that fresh new Django project smell :D
@@ -40,7 +33,8 @@ else:
 urlpatterns = [
     path('', default_view),
     path('admin/', admin.site.urls),
-] + api_urls
+    path('v1/', include(api_urls)),
+]
 
 if settings.DEBUG:
     # Let Django serve up static files while in debug mode
