@@ -1,6 +1,7 @@
 __pycache__/
 /static/
 /media/
+venv/
 *.pyc
 *.sqlite3
 *.log

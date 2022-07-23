@@ -23,7 +23,7 @@ Kickstart any new Django project with the following features already built-in:
 
 ## Usage
 ```bash
-django-admin.py startproject \
+django-admin startproject \
   --template https://github.com/jdeanwallace/django-project-template/zipball/master \
   --extension py,md \
   PROJECT_NAME [/path/to/project/directory]
@@ -42,8 +42,9 @@ django-admin.py startproject \
 
 ## Getting Started
 ```bash
-mkvirtualenv {{ project_name }}
 cd /path/to/project/directory
+python -m venv venv
+. venv/bin/activate
 pip install -r requirements/dev.txt
 ./manage.py makemigrations
 ./manage.py migrate
