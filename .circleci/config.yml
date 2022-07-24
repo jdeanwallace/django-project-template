@@ -6,10 +6,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create virtual environment.
+          name: Create virtual environment
           command: python -m venv venv
       - run:
-          name: Run tests.
+          name: Run tests
           command: |
             . venv/bin/activate
             pip install --requirement requirements/dev.txt
