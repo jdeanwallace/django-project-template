@@ -4,10 +4,10 @@ jobs:
     docker:
       - image: cimg/python:3.9.13
     environment:
-      - TMPDIR: /var/tmp
-    working_directory: ~
+      TMPDIR: /var/tmp
+    working_directory: ~/
     steps:
-      - checkout
+      - checkout:
           path: template
       - run:
           name: Create virtual environment
@@ -30,6 +30,7 @@ jobs:
               example
       - run:
           name: Run tests
+          command: |
             pushd example
             python -m venv venv
             . venv/bin/activate
