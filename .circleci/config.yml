@@ -5,29 +5,36 @@ jobs:
       - image: cimg/python:3.9.13
     environment:
       - TMPDIR: /var/tmp
-      - TEMPLATE_DIR: ~/template
+    working_directory: ~
     steps:
-      - checkout:
-          path: ~/template
+      - checkout
+          path: template
       - run:
           name: Create virtual environment
           command: python -m venv venv
       - run:
-          name: Install dependencies
+          name: Install Django
           command: |
             . venv/bin/activate
             pip install pip --upgrade
-            DJANGO_REQ="$(cat "${TEMPLATE_DIR}/requirements/base.txt" | grep -i django | head -n 1)"
+            DJANGO_REQ="$(cat ~/template/requirements/base.txt | grep -i django | head -n 1)"
             readonly DJANGO_REQ
             pip install "${DJANGO_REQ}"
       - run:
-          name: Run tests
+          name: Generate project
           command: |
             . venv/bin/activate
             django-admin startproject \
-              --template "${TEMPLATE_DIR}" \
+              --template ~/template \
               --extension py,md \
-              example .
+              example
+      - run:
+          name: Run tests
+            pushd example
+            python -m venv venv
+            . venv/bin/activate
+            pip install pip --upgrade
+            pip install --requirements requirements/dev.txt
             python manage.py makemigrations
             python manage.py test
 workflows:
