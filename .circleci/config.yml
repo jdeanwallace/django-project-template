@@ -13,8 +13,15 @@ jobs:
           command: |
             . venv/bin/activate
             pip install --requirement requirements/dev.txt
-            ./manage.py makemigrations
-            ./manage.py test
+            PROJECT_DIR="$(mktemp --tmpdir=/tmp/var --directory)"
+            readonly PROJECT_DIR
+            django-admin startproject \
+              --template . \
+              --extension py,md \
+              example "${PROJECT_DIR}"
+            pushd "${PROJECT_DIR}"
+            python manage.py makemigrations
+            python manage.py test
 workflows:
   test:
     jobs:
