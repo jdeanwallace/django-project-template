@@ -3,6 +3,8 @@ jobs:
   build-python:
     docker:
       - image: cimg/python:3.9.13
+    environment:
+      - TMPDIR: /var/tmp
     steps:
       - checkout
       - run:
@@ -13,7 +15,7 @@ jobs:
           command: |
             . venv/bin/activate
             pip install --requirement requirements/dev.txt
-            PROJECT_DIR="$(mktemp --tmpdir=/tmp/var --directory)"
+            PROJECT_DIR="$(mktemp --directory)"
             readonly PROJECT_DIR
             django-admin startproject \
               --template . \
