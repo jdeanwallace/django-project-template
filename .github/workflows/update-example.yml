@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: example
+          fetch-depth: 0
       - name: Reset example branch
         run: |
           git fetch origin startproject:startproject
