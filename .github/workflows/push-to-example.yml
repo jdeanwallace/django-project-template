@@ -1,0 +1,21 @@
+---
+name: Create startproject-example pull request
+on:
+  push:
+    branches:
+      - startproject
+jobs:
+  startprojectExample:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: example
+      - name: Reset example branch
+        run: |
+          git fetch origin startproject:startproject
+          git reset --hard startproject
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: startproject-example
