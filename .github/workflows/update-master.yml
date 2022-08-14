@@ -3,7 +3,7 @@ name: Create master pull request
 on:
   push:
     branches:
-      - example
+      - update-master-action
 jobs:
   update-master:
     runs-on: ubuntu-latest
