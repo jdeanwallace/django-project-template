@@ -1,11 +1,11 @@
 ---
-name: Create startproject-example pull request
+name: Create example pull request
 on:
   push:
     branches:
-      - github-actions
+      - startproject
 jobs:
-  startprojectExample:
+  update-example:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,4 +18,9 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          branch: startproject-example
+          branch: update-example-${{ github.sha }}
+          delete-branch: true
+          title: Update example project
+          body: |
+            Merge the last changes from the `startproject` branch:
+            https://github.com/jdeanwallace/django-project-template/commit/${{ github.sha }}
