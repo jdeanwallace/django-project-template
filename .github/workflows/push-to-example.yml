@@ -3,7 +3,7 @@ name: Create startproject-example pull request
 on:
   push:
     branches:
-      - startproject
+      - github-actions
 jobs:
   startprojectExample:
     runs-on: ubuntu-latest
