@@ -22,5 +22,4 @@ jobs:
           delete-branch: true
           title: Update example project
           body: |
-            Merge the last changes from the `startproject` branch:
-            https://github.com/jdeanwallace/django-project-template/commit/${{ github.sha }}
+            Merge the last changes from the `startproject` branch: https://github.com/jdeanwallace/django-project-template/commit/${{ github.sha }}
