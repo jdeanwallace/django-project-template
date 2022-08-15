@@ -18,8 +18,7 @@ Kickstart any new Django project with the following features already built-in:
 - Basic [logging](https://docs.python.org/3/library/logging.html) config.
 
 ## Requirements
-- Python (3.5+)
-- Django (3.1+)
+- Python (3.9+)
 
 ## Usage
 ```bash
@@ -45,7 +44,8 @@ django-admin startproject \
 cd /path/to/project/directory
 python -m venv venv
 . venv/bin/activate
-pip install -r requirements/dev.txt
+pip install pip-tools --upgrade
+pip-sync requirements/dev.txt
 ./manage.py makemigrations
 ./manage.py migrate
 ./manage.py createsuperuser
