@@ -12,7 +12,8 @@ jobs:
           name: Run tests
           command: |
             . venv/bin/activate
-            pip install --requirement requirements/dev.txt
+            pip install pip-tools --upgrade
+            pip-sync requirements/dev.txt
             ./manage.py makemigrations
             ./manage.py test
 workflows:
