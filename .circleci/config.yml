@@ -17,7 +17,7 @@ jobs:
           command: |
             . venv/bin/activate
             pip install pip --upgrade
-            DJANGO_REQ="$(cat ~/template/requirements/base.txt | grep -i django | head -n 1)"
+            DJANGO_REQ="$(cat ~/template/requirements/base.ini | grep -i django | head -n 1)"
             readonly DJANGO_REQ
             pip install "${DJANGO_REQ}"
       - run:
@@ -34,10 +34,10 @@ jobs:
             pushd example
             python -m venv venv
             . venv/bin/activate
-            pip install pip --upgrade
-            pip install --requirement requirements/dev.txt
-            python manage.py makemigrations
-            python manage.py test
+            pip install pip-tools --upgrade
+            pip-sync requirements/dev.txt
+            ./manage.py makemigrations
+            ./manage.py test
 workflows:
   test:
     jobs:
