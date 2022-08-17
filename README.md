@@ -40,6 +40,7 @@ django-admin startproject \
 ---
 
 ## Getting Started
+
 ```bash
 cd /path/to/project/directory
 python -m venv venv
