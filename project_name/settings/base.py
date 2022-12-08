@@ -15,7 +15,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 SETTINGS_DIR = Path(__file__).resolve().parent
-BASE_DIR = SETTINGS_DIR.parent.parent
+APP_DIR = SETTINGS_DIR.parent
+BASE_DIR = APP_DIR.parent
 LOG_DIR = os.environ.get('LOG_DIR', BASE_DIR)
 
 
