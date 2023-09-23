@@ -14,9 +14,33 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+
+api_urls = [
+    path("accounts/", include("apps.accounts.urls.api_urls")),
+]
+
+# Preserve that fresh new Django project smell :D
+if settings.DEBUG:
+    from django.views.debug import default_urlconf
+
+    default_view = default_urlconf
+else:
+    from django.views.generic import RedirectView
+
+    default_view = RedirectView.as_view(url="v1/")
 
 urlpatterns = [
+    path("", default_view),
     path("admin/", admin.site.urls),
+    path("v1/", include(api_urls)),
 ]
+
+if settings.DEBUG:
+    # Let Django serve up static files while in debug mode
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+    urlpatterns += staticfiles_urlpatterns()

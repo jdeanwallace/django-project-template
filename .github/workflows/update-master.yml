@@ -1,0 +1,26 @@
+---
+name: Create master pull request
+on:
+  push:
+    branches:
+      - example
+jobs:
+  update-master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: master
+          fetch-depth: 0
+      - name: Reset master branch
+        run: |
+          git fetch origin example:example
+          git reset --hard example
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: update-master-${{ github.sha }}
+          delete-branch: true
+          title: Update project template
+          body: |
+            Merge the last changes from the `example` branch: https://github.com/jdeanwallace/django-project-template/commit/${{ github.sha }}
