@@ -9,7 +9,6 @@ Kickstart any new Django project with the following features already built-in:
   - The `username` field is an auto-generated UUID.
   - The `email` field is unique and optional.
   - `User`'s login using an `email` & `password` combination.
-  - [DRF](https://www.django-rest-framework.org/) auth token integration.
 - A neat `/apps` directory for all your Django apps.
 - A `utils` app for all your commonly used functions & models, including:
   - A custom `JSONObjectField` & `JSONArrayField` to help enforce the integrity of your JSON data.
@@ -42,16 +41,15 @@ django-admin startproject \
 ## Getting Started
 
 ```bash
-cd /path/to/project/directory
-python -m venv venv
-. venv/bin/activate
-pip install pip-tools --upgrade
-pip-sync requirements/dev.txt
-./manage.py makemigrations
-./manage.py migrate
-./manage.py createsuperuser
-...
-./manage.py runserver
+python -m venv venv && \
+  . venv/bin/activate && \
+  pip install pip-tools --upgrade && \
+  pip-sync requirements/dev.txt && \
+  python manage.py makemigrations && \
+  python manage.py migrate && \
+  python manage.py createsuperuser
+
+python manage.py runserver
 ```
 
 {{ "<!"|add:"--" }} End. -->
