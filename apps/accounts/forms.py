@@ -4,8 +4,6 @@ from django.contrib.auth.forms import AuthenticationForm as DjangoAuthentication
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 
-from apps.utils.validators import validate_uuid4
-
 
 User = get_user_model()
 
