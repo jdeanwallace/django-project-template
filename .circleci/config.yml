@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build-python:
     docker:
-      - image: cimg/python:3.9.13
+      - image: cimg/python:3.12.1
     environment:
       TMPDIR: /var/tmp
     working_directory: ~/
