@@ -23,10 +23,12 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             UserModel.EMAIL_FIELD,
-            help='%s to change password for.' %  UserModel.EMAIL_FIELD,
+            help="%s to change password for." % UserModel.EMAIL_FIELD,
         )
         parser.add_argument(
-            '--database', action='store', dest='database',
+            "--database",
+            action="store",
+            dest="database",
             default=DEFAULT_DB_ALIAS,
             help='Specifies the database to use. Default is "default".',
         )
@@ -35,9 +37,11 @@ class Command(BaseCommand):
         email = options[UserModel.EMAIL_FIELD]
 
         try:
-            u = UserModel._default_manager.using(options['database']).get(**{
-                UserModel.EMAIL_FIELD: email,
-            })
+            u = UserModel._default_manager.using(options["database"]).get(
+                **{
+                    UserModel.EMAIL_FIELD: email,
+                }
+            )
         except UserModel.DoesNotExist:
             raise CommandError("user '%s' does not exist" % email)
 
@@ -58,13 +62,15 @@ class Command(BaseCommand):
             try:
                 validate_password(p2, u)
             except ValidationError as err:
-                self.stderr.write('\n'.join(err.messages))
+                self.stderr.write("\n".join(err.messages))
                 count += 1
             else:
                 password_validated = True
 
         if count == MAX_TRIES:
-            raise CommandError("Aborting password change for user '%s' after %s attempts" % (u, count))
+            raise CommandError(
+                "Aborting password change for user '%s' after %s attempts" % (u, count)
+            )
 
         u.set_password(p1)
         u.save()
