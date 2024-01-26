@@ -3,8 +3,12 @@ jobs:
   build-python:
     docker:
       - image: cimg/python:3.12.1
+    environment:
+      TMPDIR: /var/tmp
+    working_directory: ~/
     steps:
-      - checkout
+      - checkout:
+          path: template
       - run:
           name: Create virtual environment
           command: |
@@ -18,8 +22,26 @@ jobs:
             . venv/bin/activate
             black --check .
       - run:
+          name: Install Django
+          command: |
+            . venv/bin/activate
+            pip install pip --upgrade
+            DJANGO_REQ="$(cat ~/template/requirements/base.ini | grep -i django | head -n 1)"
+            readonly DJANGO_REQ
+            pip install "${DJANGO_REQ}"
+      - run:
+          name: Generate project
+          command: |
+            . venv/bin/activate
+            django-admin startproject \
+              --template ~/template \
+              --extension py,md \
+              example
+      - run:
           name: Run tests
           command: |
+            pushd example
+            python -m venv venv
             . venv/bin/activate
             ./manage.py makemigrations
             ./manage.py test
