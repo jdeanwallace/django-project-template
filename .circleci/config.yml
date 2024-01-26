@@ -11,15 +11,11 @@ jobs:
           path: template
       - run:
           name: Create virtual environment
-          command: python -m venv venv
-      - run:
-          name: Install Django
           command: |
+            python -m venv venv
             . venv/bin/activate
-            pip install pip --upgrade
-            DJANGO_REQ="$(cat ~/template/requirements/base.ini | grep -i django | head -n 1)"
-            readonly DJANGO_REQ
-            pip install "${DJANGO_REQ}"
+            pip install pip pip-tools --upgrade
+            pip-sync ~/template/requirements/dev.txt
       - run:
           name: Generate project
           command: |
@@ -29,13 +25,16 @@ jobs:
               --extension py,md \
               example
       - run:
+          name: Check style
+          command: |
+            . venv/bin/activate
+            pushd example
+            black --check .
+      - run:
           name: Run tests
           command: |
-            pushd example
-            python -m venv venv
             . venv/bin/activate
-            pip install pip-tools --upgrade
-            pip-sync requirements/dev.txt
+            pushd example
             ./manage.py makemigrations
             ./manage.py test
 workflows:
