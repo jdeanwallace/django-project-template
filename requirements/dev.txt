@@ -20,11 +20,14 @@ billiard==4.2.0
     # via
     #   -r requirements/base.txt
     #   celery
+black==24.1.0
+    # via -r requirements/dev.ini
 celery==5.3.6
     # via -r requirements/base.txt
 click==8.1.7
     # via
     #   -r requirements/base.txt
+    #   black
     #   celery
     #   click-didyoumean
     #   click-plugins
@@ -69,14 +72,22 @@ matplotlib-inline==0.1.6
     #   ipython
 model-bakery==1.17.0
     # via -r requirements/dev.ini
+mypy-extensions==1.0.0
+    # via black
+packaging==23.2
+    # via black
 parso==0.8.3
     # via
     #   -r requirements/base.txt
     #   jedi
+pathspec==0.12.1
+    # via black
 pexpect==4.9.0
     # via
     #   -r requirements/base.txt
     #   ipython
+platformdirs==4.1.0
+    # via black
 prompt-toolkit==3.0.43
     # via
     #   -r requirements/base.txt
