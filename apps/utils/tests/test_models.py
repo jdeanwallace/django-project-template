@@ -5,7 +5,10 @@ from django.db.models.base import ModelBase
 from django.utils import timezone
 
 from apps.utils.models import (
-    JSONObjectField, JSONObjectFormField, JSONArrayField, JSONArrayFormField,
+    JSONObjectField,
+    JSONObjectFormField,
+    JSONArrayField,
+    JSONArrayFormField,
     CreatedModifiedModel,
 )
 
@@ -17,9 +20,10 @@ class ModelMixinTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         # # Create a dummy model which extends the mixin
-        cls.Model = ModelBase('__TestModel__' +
-            cls.mixins[0].__name__, cls.mixins,
-            {'__module__': cls.mixins[0].__module__}
+        cls.Model = ModelBase(
+            "__TestModel__" + cls.mixins[0].__name__,
+            cls.mixins,
+            {"__module__": cls.mixins[0].__module__},
         )
         # Create the schema for our test model
         with connection.schema_editor() as schema_editor:
@@ -97,17 +101,21 @@ class CreatedModifiedModelTest(ModelMixinTestCase):
 class JSONObjectFieldTest(TestCase):
 
     def test_deny_empty_value(self):
-        empty_values = ['']
+        empty_values = [""]
         field = JSONObjectField(blank=False)
         for empty_value in empty_values:
-            with self.assertRaisesMessage(ValidationError, "This field cannot be blank."):
+            with self.assertRaisesMessage(
+                ValidationError, "This field cannot be blank."
+            ):
                 field.clean(empty_value, None)
 
     def test_allow_empty_invalid_value(self):
-        empty_values = ['']
+        empty_values = [""]
         field = JSONObjectField(blank=True)
         for empty_value in empty_values:
-            with self.assertRaisesMessage(ValidationError, "Value must be a valid JSON object."):
+            with self.assertRaisesMessage(
+                ValidationError, "Value must be a valid JSON object."
+            ):
                 field.clean(empty_value, None)
 
     def test_deny_null_value(self):
@@ -130,11 +138,24 @@ class JSONObjectFieldTest(TestCase):
 
     def test_invalid_value(self):
         field = JSONObjectField()
-        input_values = [(), '()', [], '[]', ["a", "b", 3], '["a", "b", 3]', '{1}', "Hello, World!", 1, 2.5]
+        input_values = [
+            (),
+            "()",
+            [],
+            "[]",
+            ["a", "b", 3],
+            '["a", "b", 3]',
+            "{1}",
+            "Hello, World!",
+            1,
+            2.5,
+        ]
         for input_value in input_values:
             with self.assertRaises(ValidationError) as ctx:
                 field.clean(input_value, None)
-            self.assertEqual(ctx.exception.messages, ["Value must be a valid JSON object."])
+            self.assertEqual(
+                ctx.exception.messages, ["Value must be a valid JSON object."]
+            )
 
     def test_formfield(self):
         model_field = JSONObjectField()
@@ -165,14 +186,14 @@ class JSONObjectFieldTest(TestCase):
 class JSONObjectFormFieldTest(TestCase):
 
     def test_deny_empty_value(self):
-        empty_values = [None, '', 'null']
+        empty_values = [None, "", "null"]
         field = JSONObjectFormField(required=True)
         for empty_value in empty_values:
             with self.assertRaisesMessage(ValidationError, "This field is required."):
                 field.clean(empty_value)
 
     def test_allow_empty_value(self):
-        empty_values = [None, '', 'null']
+        empty_values = [None, "", "null"]
         field = JSONObjectFormField(required=False)
         for empty_value in empty_values:
             with self.subTest(empty_value=empty_value):
@@ -181,7 +202,7 @@ class JSONObjectFormFieldTest(TestCase):
 
     def test_valid_value(self):
         field = JSONObjectFormField()
-        input_values = [{}, '{}', {"a": 1, "b": 2.5}, '{"a": 1, "b": 2.5}']
+        input_values = [{}, "{}", {"a": 1, "b": 2.5}, '{"a": 1, "b": 2.5}']
         for input_value in input_values:
             with self.subTest(input_value=input_value):
                 value = field.clean(input_value)
@@ -189,27 +210,45 @@ class JSONObjectFormFieldTest(TestCase):
 
     def test_invalid_value(self):
         field = JSONObjectFormField()
-        input_values = [(), '()', [], '[]', ["a", "b", 3], '["a", "b", 3]', '{1}', "Hello, World!", 1, 2.5]
+        input_values = [
+            (),
+            "()",
+            [],
+            "[]",
+            ["a", "b", 3],
+            '["a", "b", 3]',
+            "{1}",
+            "Hello, World!",
+            1,
+            2.5,
+        ]
         for input_value in input_values:
             with self.assertRaises(ValidationError) as ctx:
                 field.clean(input_value)
-            self.assertEqual(ctx.exception.messages, [f"'{input_value}' value must be a valid JSON object."])
+            self.assertEqual(
+                ctx.exception.messages,
+                [f"'{input_value}' value must be a valid JSON object."],
+            )
 
 
 class JSONArrayFieldTest(TestCase):
 
     def test_deny_empty_value(self):
-        empty_values = ['']
+        empty_values = [""]
         field = JSONArrayField(blank=False)
         for empty_value in empty_values:
-            with self.assertRaisesMessage(ValidationError, "This field cannot be blank."):
+            with self.assertRaisesMessage(
+                ValidationError, "This field cannot be blank."
+            ):
                 field.clean(empty_value, None)
 
     def test_allow_empty_invalid_value(self):
-        empty_values = ['']
+        empty_values = [""]
         field = JSONArrayField(blank=True)
         for empty_value in empty_values:
-            with self.assertRaisesMessage(ValidationError, "Value must be a valid JSON array."):
+            with self.assertRaisesMessage(
+                ValidationError, "Value must be a valid JSON array."
+            ):
                 field.clean(empty_value, None)
 
     def test_deny_null_value(self):
@@ -232,11 +271,24 @@ class JSONArrayFieldTest(TestCase):
 
     def test_invalid_value(self):
         field = JSONArrayField()
-        input_values = [(), '()', {}, '{}', {"a": 1, "b": 2.5}, '{"a": 1, "b": 2.5}', '{1}', "Hello, World!", 1, 2.5]
+        input_values = [
+            (),
+            "()",
+            {},
+            "{}",
+            {"a": 1, "b": 2.5},
+            '{"a": 1, "b": 2.5}',
+            "{1}",
+            "Hello, World!",
+            1,
+            2.5,
+        ]
         for input_value in input_values:
             with self.assertRaises(ValidationError) as ctx:
                 field.clean(input_value, None)
-            self.assertEqual(ctx.exception.messages, ["Value must be a valid JSON array."])
+            self.assertEqual(
+                ctx.exception.messages, ["Value must be a valid JSON array."]
+            )
 
     def test_formfield(self):
         model_field = JSONArrayField()
@@ -267,14 +319,14 @@ class JSONArrayFieldTest(TestCase):
 class JSONArrayFormFieldTest(TestCase):
 
     def test_deny_empty_value(self):
-        empty_values = [None, '', 'null']
+        empty_values = [None, "", "null"]
         field = JSONArrayFormField(required=True)
         for empty_value in empty_values:
             with self.assertRaisesMessage(ValidationError, "This field is required."):
                 field.clean(empty_value)
 
     def test_allow_empty_value(self):
-        empty_values = [None, '', 'null']
+        empty_values = [None, "", "null"]
         field = JSONArrayFormField(required=False)
         for empty_value in empty_values:
             with self.subTest(empty_value=empty_value):
@@ -283,7 +335,7 @@ class JSONArrayFormFieldTest(TestCase):
 
     def test_valid_value(self):
         field = JSONArrayFormField()
-        input_values = [[], '[]', ["a", 1, "b", 2.5], '["a", 1, "b", 2.5]']
+        input_values = [[], "[]", ["a", 1, "b", 2.5], '["a", 1, "b", 2.5]']
         for input_value in input_values:
             with self.subTest(input_value=input_value):
                 value = field.clean(input_value)
@@ -291,8 +343,22 @@ class JSONArrayFormFieldTest(TestCase):
 
     def test_invalid_value(self):
         field = JSONArrayFormField()
-        input_values = [(), '()', {}, '{}', {"a": 1, "b": 2.5}, '{"a": 1, "b": 2.5}', '{1}', "Hello, World!", 1, 2.5]
+        input_values = [
+            (),
+            "()",
+            {},
+            "{}",
+            {"a": 1, "b": 2.5},
+            '{"a": 1, "b": 2.5}',
+            "{1}",
+            "Hello, World!",
+            1,
+            2.5,
+        ]
         for input_value in input_values:
             with self.assertRaises(ValidationError) as ctx:
                 field.clean(input_value)
-            self.assertEqual(ctx.exception.messages, [f"'{input_value}' value must be a valid JSON array."])
+            self.assertEqual(
+                ctx.exception.messages,
+                [f"'{input_value}' value must be a valid JSON array."],
+            )

@@ -31,6 +31,5 @@ class ModelBackend(DjangoModelBackend):
             # difference between an existing and a nonexistent user (#20760).
             UserModel().set_password(password)
         else:
-            if (user.check_password(password)
-                and self.user_can_authenticate(user)):
+            if user.check_password(password) and self.user_can_authenticate(user):
                 return user

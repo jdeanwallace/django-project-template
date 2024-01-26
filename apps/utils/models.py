@@ -26,7 +26,7 @@ class CreatedModifiedModel(models.Model):
 class JSONFormField(forms.JSONField):
 
     def __init__(self, empty_value=None, **kwargs):
-        super().__init__(**{'empty_value': None, **kwargs})
+        super().__init__(**{"empty_value": None, **kwargs})
 
     def is_valid(self, value):
         return isinstance(value, (list, dict, int, float, forms.JSONString))
@@ -50,9 +50,9 @@ class JSONFormField(forms.JSONField):
         elif self.is_valid(converted):
             return converted
         raise exceptions.ValidationError(
-            self.error_messages['invalid'],
-            code='invalid',
-            params={'value': value},
+            self.error_messages["invalid"],
+            code="invalid",
+            params={"value": value},
         )
 
     def bound_data(self, data, initial):
@@ -71,9 +71,9 @@ class JSONFormField(forms.JSONField):
 
 class JSONObjectFormField(JSONFormField):
     default_error_messages = {
-        'invalid': _("'%(value)s' value must be a valid JSON object."),
+        "invalid": _("'%(value)s' value must be a valid JSON object."),
     }
-    empty_values = [None, '']
+    empty_values = [None, ""]
 
     def is_valid(self, value):
         return isinstance(value, (dict,))
@@ -81,58 +81,61 @@ class JSONObjectFormField(JSONFormField):
 
 class JSONArrayFormField(JSONFormField):
     default_error_messages = {
-        'invalid': _("'%(value)s' value must be a valid JSON array."),
+        "invalid": _("'%(value)s' value must be a valid JSON array."),
     }
-    empty_values = [None, '']
+    empty_values = [None, ""]
 
     def is_valid(self, value):
         return isinstance(value, (list,))
 
 
 class JSONObjectField(models.JSONField):
-    description = _('A JSON object')
+    description = _("A JSON object")
     default_error_messages = {
-        'invalid': _("Value must be a valid JSON object."),
+        "invalid": _("Value must be a valid JSON object."),
     }
-    empty_values = [None, '']
+    empty_values = [None, ""]
 
     def validate(self, value, model_instance):
         super().validate(value, model_instance)
         if value is not None and not isinstance(value, (dict,)):
             raise exceptions.ValidationError(
-                self.error_messages['invalid'],
-                code='invalid',
-                params={'value': value},
+                self.error_messages["invalid"],
+                code="invalid",
+                params={"value": value},
             )
 
-
     def formfield(self, **kwargs):
-        return super().formfield(**{
-            'form_class': JSONObjectFormField,
-            'required': not self.blank or not self.null,
-            **kwargs,
-        })
+        return super().formfield(
+            **{
+                "form_class": JSONObjectFormField,
+                "required": not self.blank or not self.null,
+                **kwargs,
+            }
+        )
 
 
 class JSONArrayField(models.JSONField):
-    description = _('A JSON array')
+    description = _("A JSON array")
     default_error_messages = {
-        'invalid': _("Value must be a valid JSON array."),
+        "invalid": _("Value must be a valid JSON array."),
     }
-    empty_values = [None, '']
+    empty_values = [None, ""]
 
     def validate(self, value, model_instance):
         super().validate(value, model_instance)
         if value is not None and not isinstance(value, (list,)):
             raise exceptions.ValidationError(
-                self.error_messages['invalid'],
-                code='invalid',
-                params={'value': value},
+                self.error_messages["invalid"],
+                code="invalid",
+                params={"value": value},
             )
 
     def formfield(self, **kwargs):
-        return super().formfield(**{
-            'form_class': JSONArrayFormField,
-            'required': not self.blank or not self.null,
-            **kwargs,
-        })
+        return super().formfield(
+            **{
+                "form_class": JSONArrayFormField,
+                "required": not self.blank or not self.null,
+                **kwargs,
+            }
+        )

@@ -1,6 +1,7 @@
 """
 Management utility to create superusers.
 """
+
 import getpass
 import sys
 
@@ -18,50 +19,60 @@ class NotRunningInTTYException(Exception):
 
 
 class Command(BaseCommand):
-    help = 'Used to create a superuser.'
+    help = "Used to create a superuser."
     requires_migrations_checks = True
-    stealth_options = ('stdin',)
+    stealth_options = ("stdin",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.UserModel = get_user_model()
-        self.username_field = self.UserModel._meta.get_field(self.UserModel.USERNAME_FIELD)
+        self.username_field = self.UserModel._meta.get_field(
+            self.UserModel.USERNAME_FIELD
+        )
         self.email_field = self.UserModel._meta.get_field(self.UserModel.EMAIL_FIELD)
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--%s' % self.UserModel.EMAIL_FIELD,
-            dest=self.UserModel.EMAIL_FIELD, default=None,
-            help='Specifies the login for the superuser.',
+            "--%s" % self.UserModel.EMAIL_FIELD,
+            dest=self.UserModel.EMAIL_FIELD,
+            default=None,
+            help="Specifies the login for the superuser.",
         )
         parser.add_argument(
-            '--noinput', '--no-input', action='store_false', dest='interactive',
+            "--noinput",
+            "--no-input",
+            action="store_false",
+            dest="interactive",
             help=(
-                'Tells Django to NOT prompt the user for input of any kind. '
-                'You must use --%s with --noinput, along with an option for '
-                'any other required field. Superusers created with --noinput will '
-                'not be able to log in until they\'re given a valid password.' %
-                self.UserModel.EMAIL_FIELD
+                "Tells Django to NOT prompt the user for input of any kind. "
+                "You must use --%s with --noinput, along with an option for "
+                "any other required field. Superusers created with --noinput will "
+                "not be able to log in until they're given a valid password."
+                % self.UserModel.EMAIL_FIELD
             ),
         )
         parser.add_argument(
-            '--database', action='store', dest='database',
+            "--database",
+            action="store",
+            dest="database",
             default=DEFAULT_DB_ALIAS,
             help='Specifies the database to use. Default is "default".',
         )
         for field in self.UserModel.REQUIRED_FIELDS:
             parser.add_argument(
-                '--%s' % field, dest=field, default=None,
-                help='Specifies the %s for the superuser.' % field,
+                "--%s" % field,
+                dest=field,
+                default=None,
+                help="Specifies the %s for the superuser." % field,
             )
 
     def execute(self, *args, **options):
-        self.stdin = options.get('stdin', sys.stdin)  # Used for testing
+        self.stdin = options.get("stdin", sys.stdin)  # Used for testing
         return super().execute(*args, **options)
 
     def handle(self, *args, **options):
         email = options[self.UserModel.EMAIL_FIELD]
-        database = options['database']
+        database = options["database"]
 
         # If not provided, create the user with an unusable password
         password = None
@@ -71,10 +82,12 @@ class Command(BaseCommand):
         fake_user_data = {}
 
         # Do quick and dirty validation if --noinput
-        if not options['interactive']:
+        if not options["interactive"]:
             try:
                 if not email:
-                    raise CommandError("You must use --%s with --noinput." % self.UserModel.EMAIL_FIELD)
+                    raise CommandError(
+                        "You must use --%s with --noinput." % self.UserModel.EMAIL_FIELD
+                    )
                 email = self.email_field.clean(email, None)
 
                 for field_name in self.UserModel.REQUIRED_FIELDS:
@@ -82,9 +95,11 @@ class Command(BaseCommand):
                         field = self.UserModel._meta.get_field(field_name)
                         user_data[field_name] = field.clean(options[field_name], None)
                     else:
-                        raise CommandError("You must use --%s with --noinput." % field_name)
+                        raise CommandError(
+                            "You must use --%s with --noinput." % field_name
+                        )
             except exceptions.ValidationError as e:
-                raise CommandError('; '.join(e.messages))
+                raise CommandError("; ".join(e.messages))
 
         else:
             # Prompt for email/password, and any other required fields.
@@ -92,13 +107,13 @@ class Command(BaseCommand):
             # KeyboardInterrupt and exit gracefully.
             try:
 
-                if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
+                if hasattr(self.stdin, "isatty") and not self.stdin.isatty():
                     raise NotRunningInTTYException("Not running in a TTY")
 
                 # Get a email
                 verbose_field_name = self.email_field.verbose_name
                 while not email:
-                    input_msg = '%s: ' % (capfirst(verbose_field_name))
+                    input_msg = "%s: " % (capfirst(verbose_field_name))
                     email = self.get_input_data(self.email_field, input_msg, None)
                     if not email:
                         continue
@@ -110,19 +125,26 @@ class Command(BaseCommand):
                         except self.UserModel.DoesNotExist:
                             pass
                         else:
-                            self.stderr.write("Error: That %s is already taken." % verbose_field_name)
+                            self.stderr.write(
+                                "Error: That %s is already taken." % verbose_field_name
+                            )
                             email = None
 
                 for field_name in self.UserModel.REQUIRED_FIELDS:
                     field = self.UserModel._meta.get_field(field_name)
                     user_data[field_name] = options[field_name]
                     while user_data[field_name] is None:
-                        message = '%s%s: ' % (
+                        message = "%s%s: " % (
                             capfirst(field.verbose_name),
-                            ' (%s.%s)' % (
-                                field.remote_field.model._meta.object_name,
-                                field.remote_field.field_name,
-                            ) if field.remote_field else '',
+                            (
+                                " (%s.%s)"
+                                % (
+                                    field.remote_field.model._meta.object_name,
+                                    field.remote_field.field_name,
+                                )
+                                if field.remote_field
+                                else ""
+                            ),
                         )
                         input_value = self.get_input_data(field, message)
                         user_data[field_name] = input_value
@@ -130,19 +152,21 @@ class Command(BaseCommand):
 
                         # Wrap any foreign keys in fake model instances
                         if field.remote_field:
-                            fake_user_data[field_name] = field.remote_field.model(input_value)
+                            fake_user_data[field_name] = field.remote_field.model(
+                                input_value
+                            )
 
                 # Get a password
                 while password is None:
                     password = getpass.getpass()
-                    password2 = getpass.getpass('Password (again): ')
+                    password2 = getpass.getpass("Password (again): ")
                     if password != password2:
                         self.stderr.write("Error: Your passwords didn't match.")
                         password = None
                         # Don't validate passwords that don't match.
                         continue
 
-                    if password.strip() == '':
+                    if password.strip() == "":
                         self.stderr.write("Error: Blank passwords aren't allowed.")
                         password = None
                         # Don't validate blank passwords.
@@ -151,7 +175,7 @@ class Command(BaseCommand):
                     try:
                         validate_password(password2, self.UserModel(**fake_user_data))
                     except exceptions.ValidationError as err:
-                        self.stderr.write('\n'.join(err.messages))
+                        self.stderr.write("\n".join(err.messages))
                         password = None
 
             except KeyboardInterrupt:
@@ -167,18 +191,25 @@ class Command(BaseCommand):
 
         if email:
             user_data[self.UserModel.EMAIL_FIELD] = email
-            user_data['password'] = password
-            user = self.UserModel._default_manager.db_manager(database).create_superuser(**user_data)
-            if options['verbosity'] >= 1:
+            user_data["password"] = password
+            user = self.UserModel._default_manager.db_manager(
+                database
+            ).create_superuser(**user_data)
+            if options["verbosity"] >= 1:
                 self.stdout.write(
-                    "Superuser created successfully.\n%s" % (
-                        '\n'.join([
-                            "%s: %s" % (capfirst(self.email_field.verbose_name), email),
-                            "%s: %s" % (
-                                capfirst(self.username_field.verbose_name),
-                                getattr(user, self.UserModel.USERNAME_FIELD),
-                            )
-                        ]),
+                    "Superuser created successfully.\n%s"
+                    % (
+                        "\n".join(
+                            [
+                                "%s: %s"
+                                % (capfirst(self.email_field.verbose_name), email),
+                                "%s: %s"
+                                % (
+                                    capfirst(self.username_field.verbose_name),
+                                    getattr(user, self.UserModel.USERNAME_FIELD),
+                                ),
+                            ]
+                        ),
                     )
                 )
 
@@ -188,12 +219,12 @@ class Command(BaseCommand):
         validation exceptions.
         """
         raw_value = input(message)
-        if default and raw_value == '':
+        if default and raw_value == "":
             raw_value = default
         try:
             val = field.clean(raw_value, None)
         except exceptions.ValidationError as e:
-            self.stderr.write("Error: %s" % '; '.join(e.messages))
+            self.stderr.write("Error: %s" % "; ".join(e.messages))
             val = None
 
         return val
