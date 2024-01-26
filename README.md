@@ -8,16 +8,15 @@
 ## Getting Started
 
 ```bash
-cd /path/to/project/directory
-python -m venv venv
-. venv/bin/activate
-pip install pip-tools --upgrade
-pip-sync requirements/dev.txt
-./manage.py makemigrations
-./manage.py migrate
-./manage.py createsuperuser
-...
-./manage.py runserver
+python -m venv venv && \
+  . venv/bin/activate && \
+  pip install pip-tools --upgrade && \
+  pip-sync requirements/dev.txt && \
+  python manage.py makemigrations && \
+  python manage.py migrate && \
+  python manage.py createsuperuser
+
+python manage.py runserver
 ```
 
 <!-- End. -->
