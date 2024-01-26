@@ -15,7 +15,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
@@ -24,18 +23,8 @@ api_urls = [
     path("accounts/", include("apps.accounts.urls.api_urls")),
 ]
 
-# Preserve that fresh new Django project smell :D
-if settings.DEBUG:
-    from django.views.debug import default_urlconf
-
-    default_view = default_urlconf
-else:
-    from django.views.generic import RedirectView
-
-    default_view = RedirectView.as_view(url="v1/")
-
 urlpatterns = [
-    path("", default_view),
+    path("", include("apps.site.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("apps.accounts.urls")),
     path("v1/", include(api_urls)),

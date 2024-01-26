@@ -1,0 +1,28 @@
+{% extends 'site/base.html' %}
+{% block body %}
+<nav>
+  {% block nav %}
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/">About</a></li>
+    <li><a href="/">Contact</a></li>
+  </ul>
+  {% endblock nav %}
+</nav>
+<header>
+  {% block header %}
+  <strong>Example</strong>
+  {% endblock header %}
+</header>
+<main>
+  {% block main %}
+  <h1>Hello, world!</h1>
+  <p>This is your example website.</p>
+  {% endblock main %}
+</main>
+<footer>
+  {% block footer %}
+  <p>© {% now 'Y' %} Example. All rights reserved.</p>
+  {% endblock footer %}
+</footer>
+{% endblock body %}
