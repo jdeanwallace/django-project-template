@@ -22,7 +22,8 @@ jobs:
             . venv/bin/activate
             django-admin startproject \
               --template ~/template \
-              --extension py,md \
+              --extension py,md,toml \
+              --name Dockerfile \
               example
       - run:
           name: Check style

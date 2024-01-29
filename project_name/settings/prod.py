@@ -5,5 +5,5 @@ from .base import *
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "example.fly.dev",
+    "{{ project_name }}.fly.dev",
 ]
