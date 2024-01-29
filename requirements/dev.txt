@@ -146,3 +146,5 @@ wcwidth==0.2.13
     # via
     #   -r requirements/base.txt
     #   prompt-toolkit
+whitenoise==6.6.0
+    # via -r requirements/base.txt
