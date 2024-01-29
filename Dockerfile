@@ -28,14 +28,14 @@ user=root
 [unix_http_server]
 file=/var/run/supervisor.sock
 
-[program:example]
+[program:{{ project_name }}]
 directory=/app
 command=gunicorn
   --bind 0.0.0.0:8000
   --capture-output
   --log-file -
   --log-level debug
-  example.wsgi:application
+  {{ project_name }}.wsgi:application
 redirect_stderr=true
 stdout_logfile=/dev/null
 stdout_logfile_maxbytes=0
