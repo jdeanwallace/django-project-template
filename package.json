@@ -1,0 +1,20 @@
+{
+  "name": "{{ project_name }}",
+  "version": "0.1.0",
+  "description": "{{ project_name|title }} Django Project",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:css": "npm run build:css -- --watch",
+    "dev:python": "PYTHONUNBUFFERED=1 python manage.py runserver",
+    "dev": "concurrently --kill-others \"npm run dev:css\" \"npm run dev:python\"",
+    "build:css": "tailwindcss --config ./apps/site/assets/site/tailwind.config.js --input ./apps/site/assets/site/css/style.css --output ./apps/site/static/site/css/style.css",
+    "build": "npm run build:css -- --minify"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "concurrently": "^8.2.2",
+    "tailwindcss": "^3.4.1"
+  }
+}

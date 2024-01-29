@@ -23,7 +23,7 @@ jobs:
             django-admin startproject \
               --template ~/template \
               --extension py,md,toml \
-              --name Dockerfile \
+              --name Dockerfile,package.json,package-lock.json \
               example
       - run:
           name: Check style
