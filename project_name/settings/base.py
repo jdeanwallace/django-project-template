@@ -17,7 +17,7 @@ from pathlib import Path
 SETTINGS_DIR = Path(__file__).resolve().parent
 APP_DIR = SETTINGS_DIR.parent
 BASE_DIR = APP_DIR.parent
-LOG_DIR = os.environ.get("LOG_DIR", BASE_DIR)
+DATA_DIR = BASE_DIR / "data"
 
 
 # Quick-start development settings - unsuitable for production
@@ -88,7 +88,7 @@ WSGI_APPLICATION = "{{ project_name }}.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": DATA_DIR / "db.sqlite3",
     }
 }
 
@@ -178,7 +178,7 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.handlers.RotatingFileHandler",
-            "filename": LOG_DIR / "django.log",
+            "filename": DATA_DIR / "django.log",
             "maxBytes": 1024 * 1024 * 5,  # 5MB
             "backupCount": 1,
             "formatter": "verbose",

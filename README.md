@@ -23,7 +23,8 @@ Kickstart any new Django project with the following features already built-in:
 ```bash
 django-admin startproject \
   --template https://github.com/jdeanwallace/django-project-template/zipball/master \
-  --extension py,md \
+  --extension py,md,toml \
+  --name Dockerfile \
   PROJECT_NAME [/path/to/project/directory]
 ```
 
