@@ -1,0 +1,47 @@
+{% load static %}
+<template id="x-faq-template">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <div>
+    <label class="cursor-pointer font-medium block py-4">
+      <input id="toggle" class="hidden peer" type="checkbox"/>
+      <div class="flex items-center gap-1">
+        <div class="flex-auto">
+          <slot name="question"></slot>
+        </div>
+        <svg id="chevron-down" class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+        </svg>
+        <svg id="chevron-up" class="w-6 h-6 flex-shrink-0 hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
+        </svg>
+      </div>
+      <div class="hidden peer-checked:block font-light mt-1" >
+        <slot name="answer"></slot>
+      </div>
+    </label>
+  </div>
+</template>
+<script>
+  customElements.define("x-faq", class extends HTMLElement {
+    connectedCallback() {
+      const template = document.getElementById(this.nodeName.toLowerCase()+"-template");
+      this.attachShadow({ mode: "open" }).appendChild(template.content.cloneNode(true));
+      document.querySelectorAll("head > link[rel=stylesheet]").forEach(
+        (link) => this.shadowRoot.appendChild(link.cloneNode(true))
+      );
+
+      const toggle = this.shadowRoot.querySelector("#toggle");
+      const chevronDown = this.shadowRoot.querySelector("#chevron-down");
+      const chevronUp = this.shadowRoot.querySelector("#chevron-up");
+
+      toggle.addEventListener("change", (event) => {
+        chevronDown.classList.toggle("hidden", toggle.checked);
+        chevronUp.classList.toggle("hidden", !toggle.checked);
+      });
+    }
+  });
+</script>
