@@ -1,4 +1,9 @@
 {% extends 'site/base.html' %}
+{% load static %}
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'site/css/style.css' %}">
+{% endblock head %}
 {% block body %}
 <nav>
   {% block nav %}
