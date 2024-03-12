@@ -8,7 +8,7 @@ app = '{{ project_name }}'
   PYTHONUNBUFFERED = '1'
 
 [[mounts]]
-  source = 'example_data'
+  source = '{{ project_name }}_data'
   destination = '/app/data'
   processes = ['app']
 
