@@ -1,9 +1,9 @@
-app = 'example'
+app = '{{ project_name }}'
 
 [build]
 
 [env]
-  DJANGO_SETTINGS_MODULE = 'example.settings.dev'
+  DJANGO_SETTINGS_MODULE = '{{ project_name }}.settings.dev'
   PYTHONDONTWRITEBYTECODE = '1'
   PYTHONUNBUFFERED = '1'
 
