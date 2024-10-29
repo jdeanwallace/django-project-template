@@ -1,0 +1,13 @@
+**/__pycache__
+static
+media
+venv
+**/*.pyc
+**/*.sqlite3
+**/*.log
+**/.DS_Store
+**/node_modules
+data/**/*
+!data/**/.gitignore
+fly.toml
+.env*

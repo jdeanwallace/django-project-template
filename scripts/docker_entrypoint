@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o xtrace
+
+pushd /app
+
+python manage.py collectstatic --no-input
+
+python manage.py migrate
+
+exec /usr/bin/supervisord

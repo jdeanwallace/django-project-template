@@ -1,0 +1,51 @@
+{% extends 'site/layouts/stacked.html' %}
+{% load static %}
+{% block title %}Example{% endblock title %}
+{% block meta %}
+{% include 'site/partials/meta.html' %}
+{% endblock meta %}
+{% block nav %}
+<div class="flex flex-col h-full">
+  <div class="px-4 my-2 flex gap-2 items-center">
+    <label class="cursor-pointer p-2 hover:bg-slate-200 rounded-md" for="nav-toggle">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </label>
+    <a class="flex items-center gap-1 p-2 rounded-md" href="{% url 'site:home' %}">
+      <img class="w-8 h-8" src="{% static 'site/img/logo.svg' %}" alt="logo"/>
+      <span class="text-2xl font-semibold">Example</span>
+    </a>
+  </div>
+  <ul class="px-4 flex flex-col">
+    <li><a class="block p-2 hover:bg-slate-200 rounded-md" href="#how-it-works" onclick="document.getElementById('nav-toggle').click();">How it works</a></li>
+    <li><a class="block p-2 hover:bg-slate-200 rounded-md" href="#pricing" onclick="document.getElementById('nav-toggle').click();">Pricing</a></li>
+    <li><a class="block p-2 hover:bg-slate-200 rounded-md" href="#questions" onclick="document.getElementById('nav-toggle').click();">Questions</a></li>
+  </ul>
+</div>
+{% endblock nav %}
+{% block header %}
+<div class="max-w-7xl mx-auto px-4 my-2 flex gap-2 items-center">
+  <label class="md:hidden cursor-pointer p-2 hover:bg-slate-200 rounded-md" for="nav-toggle">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+    </svg>
+  </label>
+  <a class="flex items-center gap-1 p-2 rounded-md" href="{% url 'site:home' %}">
+    <img class="w-8 h-8" src="{% static 'site/img/logo.svg' %}" alt="logo"/>
+    <span class="text-2xl font-semibold">Example</span>
+  </a>
+  <ul class="max-md:hidden flex gap-4 items-center">
+    <li><a class="hover:underline" href="#how-it-works">How it works</a></li>
+    <li><a class="hover:underline" href="#pricing">Pricing</a></li>
+    <li><a class="hover:underline" href="#questions">Questions</a></li>
+  </ul>
+</div>
+{% endblock header %}
+{% block footer %}
+<div class="max-w-7xl mx-auto px-4 my-12">
+  <p class="text-center text-gray-500">
+    © {% now 'Y' %} Example. All rights reserved.
+  </p>
+</div>
+{% endblock footer %}
