@@ -1,14 +1,14 @@
-app = 'example'
+app = '{{ project_name }}'
 
 [build]
 
 [env]
-  DJANGO_SETTINGS_MODULE = 'example.settings.dev'
+  DJANGO_SETTINGS_MODULE = '{{ project_name }}.settings.dev'
   PYTHONDONTWRITEBYTECODE = '1'
   PYTHONUNBUFFERED = '1'
 
 [[mounts]]
-  source = 'example_data'
+  source = '{{ project_name }}_data'
   destination = '/app/data'
   processes = ['app']
 

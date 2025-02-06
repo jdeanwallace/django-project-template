@@ -1,7 +1,7 @@
 {
-  "name": "example",
+  "name": "{{ project_name }}",
   "version": "0.1.0",
-  "description": "Example Django Project",
+  "description": "{{ project_name|title }} Django Project",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

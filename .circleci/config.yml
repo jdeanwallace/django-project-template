@@ -3,24 +3,39 @@ jobs:
   build-python:
     docker:
       - image: cimg/python:3.12.1
+    environment:
+      TMPDIR: /var/tmp
+    working_directory: ~/
     steps:
-      - checkout
+      - checkout:
+          path: template
       - run:
           name: Create virtual environment
           command: |
             python -m venv venv
             . venv/bin/activate
             pip install pip pip-tools --upgrade
-            pip-sync requirements/dev.txt
+            pip-sync ~/template/requirements/dev.txt
+      - run:
+          name: Generate project
+          command: |
+            . venv/bin/activate
+            django-admin startproject \
+              --template ~/template \
+              --extension py,md,toml \
+              --name Dockerfile,package.json,package-lock.json \
+              example
       - run:
           name: Check style
           command: |
             . venv/bin/activate
+            pushd example
             black --check .
       - run:
           name: Run tests
           command: |
             . venv/bin/activate
+            pushd example
             ./manage.py makemigrations
             ./manage.py test
 workflows:
