@@ -57,7 +57,7 @@ decorator==5.1.1
     # via
     #   -r requirements/base.txt
     #   ipython
-django==5.1.2
+django==5.2.17
     # via
     #   -r requirements/base.txt
     #   django-ses
